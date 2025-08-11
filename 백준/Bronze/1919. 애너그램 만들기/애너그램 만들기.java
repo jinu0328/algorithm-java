@@ -4,36 +4,26 @@ public class Main {
     static Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
-        String input1 = scanner.nextLine();
-        String input2 = scanner.nextLine();
+        String word1 = scanner.nextLine();
+        String word2 = scanner.nextLine();
 
-        char[] word1 = input1.toCharArray();
-        char[] word2 = input2.toCharArray();
+        int[] count1 = new int[26];
+        int[] count2 = new int[26];
 
-        for(int i = 0; i < input1.length(); i++) {
-            for(int j = 0; j < input2.length(); j++) {
-                if(word2[j] == word1[i]) {
-                    word1[i] = '@';
-                    word2[j] = '@';
-                    break;
-                }
-            }
+        for(int i = 0; i < word1.length(); i++) {
+            count1[word1.charAt(i) - 'a']++;
         }
+
+        for(int i = 0; i < word2.length(); i++) {
+            count2[word2.charAt(i) - 'a']++;
+        }
+
         int count = 0;
-        for(char c : word1) {
-            if(c != '@') {
-                count++;
-            }
-        }
-
-        for(char c : word2) {
-            if(c != '@') {
-                count++;
-            }
+        for(int i = 0; i < 26; i++) {
+            count += Math.abs(count1[i] - count2[i]);
         }
 
         System.out.println(count);
-
 
     }
 }
