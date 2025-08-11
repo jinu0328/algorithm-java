@@ -4,22 +4,14 @@ public class Main {
     static Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
-        String input = scanner.nextLine();
+        String word = scanner.nextLine();
 
-        char[] words = input.toCharArray();
-
-        for(int i = 0; i < words.length; i++) {
-            if(Character.isUpperCase(words[i])) {
-                words[i] = Character.toLowerCase(words[i]);
+        for(int i = 0; i < word.length(); i++) {
+            if('A' <= word.charAt(i) && word.charAt(i) <= 'Z') {
+                System.out.print((char) ('a' + word.charAt(i) - 'A'));
                 continue;
             }
-            
-            words[i] = Character.toUpperCase(words[i]);
-            
-        }
-
-        for(char word : words) {
-            System.out.print(word);
+            System.out.print((char) ('A' + word.charAt(i) - 'a'));
         }
 
     }
