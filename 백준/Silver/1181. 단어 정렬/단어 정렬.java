@@ -7,17 +7,10 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
         int N = Integer.parseInt(br.readLine());
-        Set<String> input = new HashSet<>();
 
+        String[] words = new String[N];
         for(int i = 0; i < N; i++) {
-            input.add(br.readLine());
-        }
-
-        String[] words = new String[input.size()];
-
-        int k = 0;
-        for(String in : input) {
-            words[k++] = in;
+            words[i] = br.readLine();
         }
 
         Arrays.sort(words, new Comparator<String>() {
@@ -30,8 +23,14 @@ public class Main {
             }
         });
 
-        for(int i = 0; i < input.size(); i++) {
+        String ex = "";
+        for(int i = 0; i < N; i++) {
+            if(Objects.equals(ex, words[i])) {
+                ex = words[i];
+                continue;
+            }
             bw.write(words[i] + "\n");
+            ex = words[i];
         }
 
         bw.flush();
