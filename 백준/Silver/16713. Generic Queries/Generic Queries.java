@@ -3,31 +3,30 @@ import java.util.*;
 
 public class Main {
     static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-    static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+    static StringTokenizer st;
 
     public static void main(String[] args) throws IOException {
-        String[] input = br.readLine().split(" ");
-        int N = Integer.parseInt(input[0]);
-        int Q = Integer.parseInt(input[1]);
+        st = new StringTokenizer(br.readLine());
+        int N = Integer.parseInt(st.nextToken());
+        int Q = Integer.parseInt(st.nextToken());
 
         int[] arr = new int[N + 1];
-        String[] input2 = br.readLine().split(" ");
-        for(int i = 1; i <= N; i++) {
-            arr[i] = Integer.parseInt(input2[i - 1]);
+        st = new StringTokenizer(br.readLine());
+        for (int i = 1; i <= N; i++) {
+            arr[i] = Integer.parseInt(st.nextToken());
         }
 
         int[] acc = new int[N + 1];
-        for(int i = 1; i <= N; i++) {
+        for (int i = 1; i <= N; i++) {
             acc[i] = acc[i - 1] ^ arr[i];
         }
 
         int result = 0;
-        while(Q-- > 0) {
-            String[] input3 = br.readLine().split(" ");
-            int s = Integer.parseInt(input3[0]);
-            int e = Integer.parseInt(input3[1]);
-
-            result ^= acc[s- 1] ^ acc[e];
+        while (Q-- > 0) {
+            st = new StringTokenizer(br.readLine());
+            int s = Integer.parseInt(st.nextToken());
+            int e = Integer.parseInt(st.nextToken());
+            result ^= acc[e] ^ acc[s - 1];
         }
 
         System.out.println(result);
