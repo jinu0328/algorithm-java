@@ -1,35 +1,25 @@
 import java.io.*;
-import java.util.Arrays;
-import java.util.Scanner;
+import java.util.*;
 
 public class Main {
-    static Scanner sc = new Scanner(System.in);
-
-    static String[] S;
-    static String[] input;
     public static void main(String[] args) throws IOException {
-        int N = sc.nextInt();
-        int M = sc.nextInt();
-        sc.nextLine();
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        S = new String[N];
-        input = new String[M];
+        String[] input = br.readLine().split(" ");
+        int N = Integer.parseInt(input[0]);
+        int M = Integer.parseInt(input[1]);
 
-        for(int i = 0; i < N; i++) {
-            S[i] = sc.nextLine();
-        }
+        Set<String> S = new HashSet<>();
 
-        for(int i = 0; i < M; i++) {
-            input[i] = sc.nextLine();
+        while(N-- > 0) {
+            S.add(br.readLine());
         }
 
         int count = 0;
-        Arrays.sort(S);
-        for(int i = 0; i < M; i++) {
-            if(Arrays.binarySearch(S, input[i]) < 0) {
-                continue;
+        while(M-- > 0) {
+            if(S.contains(br.readLine())) {
+                count++;
             }
-            count++;
         }
 
         System.out.println(count);
