@@ -17,11 +17,13 @@ public class Main {
         }
 
         int low = 0;
+        int high = 0;
+
         for(int cost : costs) {
+            high += cost;
             low = Math.max(low, cost);
         }
 
-        int high = 1000000000;
 
         int result = 0;
         while(low <= high) {
