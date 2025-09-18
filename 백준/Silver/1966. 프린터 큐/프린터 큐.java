@@ -3,11 +3,11 @@ import java.util.*;
 public class Main {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        int T = sc.nextInt(); // 테스트케이스 수
+        int T = sc.nextInt();
 
         while (T-- > 0) {
-            int N = sc.nextInt(); // 문서 수
-            int M = sc.nextInt(); // 궁금한 문서의 위치
+            int N = sc.nextInt();
+            int M = sc.nextInt();
             Queue<Document> queue = new LinkedList<>();
             int[] priorities = new int[N];
 
@@ -22,7 +22,6 @@ public class Main {
                 Document doc = queue.poll();
                 boolean hasHigher = false;
 
-                // 큐에 남아 있는 문서 중 우선순위가 높은 문서가 있는지 확인
                 for (Document d : queue) {
                     if (d.priority > doc.priority) {
                         hasHigher = true;
@@ -41,7 +40,6 @@ public class Main {
                 }
             }
         }
-        sc.close();
     }
     
     static class Document {
