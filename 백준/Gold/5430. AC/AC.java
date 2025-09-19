@@ -44,6 +44,7 @@ public class Main {
                 deque.pollLast();
             }
 
+            
             if(passed) {
                 if(deque.isEmpty()) {
                     bw.write("[]\n");
