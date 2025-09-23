@@ -1,29 +1,35 @@
+import java.io.*;
 import java.util.*;
 
 public class Main {
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        String input = sc.next();
-        Stack<Character> stack = new Stack<>();
-        int result = 0;
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+
+        char[] input = br.readLine().toCharArray();
+
         char prev = ' ';
-        
-        for (char c : input.toCharArray()) {
-            if (c == '(') {
-                stack.push(c);
-            } else { // c == ')'
-                stack.pop();
-                if (prev == '(') {
-                    // 레이저: 현재 열린 막대기 개수만큼 조각 추가
-                    result += stack.size();
+        Deque<Character> deque = new ArrayDeque<>();
+        int result = 0;
+        for(char c : input) {
+            if(c == '(') {
+                deque.add(c);
+            }
+            else {
+                if(prev == '(') {
+                    deque.pollLast();
+                    result += deque.size();
                 } else {
-                    // 막대기 끝: 한 조각 추가
+                    deque.pollLast();
                     result += 1;
                 }
             }
             prev = c;
         }
-        
+
         System.out.println(result);
     }
 }
+// )
+//
+// 3 3 3 2 1 12
