@@ -2,36 +2,39 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
-    static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-    static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
-
     public static void main(String[] args) throws IOException {
-       int n = Integer.parseInt(br.readLine());
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
+        int n = Integer.parseInt(br.readLine());
+        Set<String> people = new HashSet<>();
+        while(n-- > 0) {
+            String[] input = br.readLine().split(" ");
+            String name = input[0];
+            String action = input[1];
 
-       Set<String> people = new HashSet<>();
-       for(int i = 0; i < n; i++) {
-           String[] input = br.readLine().split(" ");
-           String person = input[0];
-           String command = input[1];
+            if(Objects.equals(action, "enter")) {
+                people.add(name);
+            } else {
+                people.remove(name);
+            }
+        }
 
-           if(Objects.equals(command, "enter")) {
-               people.add(person);
-           }
-           else {
-               people.remove(person);
-           }
+        people.stream()
+                .sorted(new Comparator<String>() {
+                    @Override
+                    public int compare(String o1, String o2) {
+                        return o2.compareTo(o1);
+                    }
+                })
+                .forEach(name -> {
+                    try {
+                        bw.write(name + "\n");
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                });
 
-       }
-
-       List<String> result = new ArrayList<>(people);
-       result.sort(Comparator.reverseOrder());
-
-       for(int i = 0; i < result.size(); i++) {
-           bw.write(result.get(i) + "\n");
-       }
-
-       bw.flush();
+        bw.flush();
     }
-
 }
