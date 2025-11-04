@@ -2,48 +2,21 @@ import java.util.*;
 
 class Solution {
     public int solution(int bridge_length, int weight, int[] truck_weights) {
-        int count = 0;
-        int currentWeight = 0;
-        Queue<Truck> trucks = new LinkedList<>();
-        for(int weights : truck_weights) {
-            trucks.add(new Truck(weights));
-        }
-        List<Truck> running = new ArrayList<>();
-        List<Truck> completed = new ArrayList<>();
-        while(completed.size() < truck_weights.length) {
-            count++;
-            if(!trucks.isEmpty()) {
-                Truck truck = trucks.peek();
-                if(currentWeight + truck.weight <= weight) {
-                    Truck currentTruck = trucks.poll();
-                    running.add(currentTruck);
-                    currentWeight += currentTruck.weight;
+        Queue<Integer> bridge = new ArrayDeque<>();
+        int time = 0, sum = 0;
+        for (int t : truck_weights) {
+            while (true) {
+                time++;
+                if (bridge.size() == bridge_length) sum -= bridge.poll();
+                if (sum + t <= weight) {
+                    bridge.add(t);
+                    sum += t;
+                    break;
+                } else {
+                    bridge.add(0); // 1초 흘려보내기
                 }
             }
-            
-            for(Truck runningTruck : running) {
-                runningTruck.move();
-                if(runningTruck.position == bridge_length) {
-                    currentWeight -= runningTruck.weight;
-                    completed.add(runningTruck);
-                }
-                
-            }
         }
-        
-        return count + 1;
-    }
-    
-    static class Truck {
-        int position = 0;
-        int weight;
-        
-        public Truck(int weight) {
-            this.weight = weight;
-        }
-        
-        public void move() {
-            position++;
-        }
+        return time + bridge_length;
     }
 }
