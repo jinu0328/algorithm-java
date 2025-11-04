@@ -1,50 +1,55 @@
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Queue;
+import java.util.*;
 
 class Solution {
     public int[] solution(int[] progresses, int[] speeds) {
-        Queue<Task> tasks = new ArrayDeque<>();
+        Queue<Job> jobs = new ArrayDeque<>();
+        for(int i = 0; i < speeds.length; i++) {
+            jobs.add(new Job(progresses[i], speeds[i]));
+        }
+        
         List<Integer> result = new ArrayList<>();
-
-        for (int i = 0; i < progresses.length; i++) {
-            tasks.add(new Task(progresses[i], speeds[i]));
-        }
-
-        while (!tasks.isEmpty()) {
-            tasks.forEach(Task::proceed);
+        do {
+            Job currentJob = jobs.peek();
+            int times = currentJob.getRemainTimes();
+            for(Job job : jobs) {
+                job.proceed(times);
+            }
             int count = 0;
-            while (!tasks.isEmpty() && tasks.peek().isCompleted) {
-                tasks.remove();
-                count++;
+            while(!jobs.isEmpty()) {
+                Job job = jobs.peek();
+                if(job.progress >= 100) {
+                    jobs.poll();
+                    count++;
+                }
+                else {
+                    break;
+                }
             }
-
-            if(count != 0) {
-                result.add(count);
-            }
-        }
-
+            result.add(count);
+        } while(!jobs.isEmpty());
+        
         return result.stream().mapToInt(i -> i).toArray();
     }
-
-    static class Task {
+    
+    static class Job {
         int progress;
         int speed;
-        boolean isCompleted = false;
-
-        Task(int progress, int speed) {
+        
+        public Job(int progress, int speed) {
             this.progress = progress;
             this.speed = speed;
         }
-
-        void proceed() {
-            progress += speed;
-            if (progress >= 100) {
-                isCompleted = true;
+        
+        public int getRemainTimes() {
+            int remain = 100 - progress;
+            if(remain % speed == 0) {
+                return remain / speed;
             }
+            return remain / speed + 1;
+        }
+        
+        public void proceed(int times) {
+            progress += speed * times;
         }
     }
 }
-
-
