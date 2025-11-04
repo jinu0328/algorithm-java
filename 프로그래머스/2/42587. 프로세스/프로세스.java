@@ -1,55 +1,51 @@
-import java.util.ArrayDeque;
-import java.util.Queue;
+import java.util.*;
 
 class Solution {
     public int solution(int[] priorities, int location) {
-        Queue<Process> processes = new ArrayDeque<>();
-
+        Queue<Job> queue = new ArrayDeque<>();
+        int[] priority = new int[10];
         for(int i = 0; i < priorities.length; i++) {
             if(i == location) {
-                processes.add(new Process(priorities[i], true));
+                queue.add(new Job(priorities[i], true));
             }
             else {
-                processes.add(new Process(priorities[i]));
+                queue.add(new Job(priorities[i], false));
             }
+            
+            priority[priorities[i]]++;
         }
-
         int count = 0;
+        
         while(true) {
-            Process process = processes.poll();
-            if(hasBigger(process.priority, processes)) {
-                processes.add(process);
-            }
-            else {
-                count++;
-                if(process.wantToKnow) {
-                    return count;
+            Job current = queue.poll();
+            boolean isFirst = true;
+            for(int i = current.priority + 1; i < priority.length; i++) {
+                if(priority[i] > 0) {
+                    queue.add(current);
+                    isFirst = false;
+                    break;
                 }
             }
+            if(!isFirst) {
+                continue;
+            }
+            count++;
+            priority[current.priority]--;
+            if(current.isTarget) {
+                break;
+            }
         }
+        
+        return count;
     }
-
-    private boolean hasBigger(int priority, Queue<Process> processes) {
-        return processes.stream()
-                .anyMatch(process -> process.priority > priority);
-    }
-
-    static class Process {
+    
+    static class Job {
         int priority;
-        boolean wantToKnow = false;
-
-        Process(int priority) {
+        boolean isTarget;
+        
+        public Job(int priority, boolean isTarget) {
             this.priority = priority;
-        }
-
-        Process(int priority, boolean wantToKnow) {
-            this.priority = priority;
-            this.wantToKnow = wantToKnow;
+            this.isTarget = isTarget;
         }
     }
 }
-
-
-/*
-
- */
