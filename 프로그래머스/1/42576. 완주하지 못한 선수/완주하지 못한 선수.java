@@ -13,8 +13,11 @@ class Solution {
             }
         }
         
-        String answer = names.keySet().stream()
-                .findFirst().get();
-        return answer;
+        String result = "";
+        for(String name : names.keySet()) {
+            result = name;
+        }
+        
+        return result;
     }
 }
