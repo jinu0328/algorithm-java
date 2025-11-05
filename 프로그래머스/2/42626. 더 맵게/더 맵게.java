@@ -1,26 +1,29 @@
-import java.util.PriorityQueue;
-import java.util.Queue;
+import java.util.*;
 
 class Solution {
     public int solution(int[] scoville, int K) {
-        Queue<Integer> scovilles = new PriorityQueue<>();
-
+        PriorityQueue<Integer> queue = new PriorityQueue<>();
+        int min = 1000000;
         for(int scov : scoville) {
-            scovilles.add(scov);
+            queue.add(scov);
+            min = Math.min(min, scov);
         }
-
+        
+        boolean success = true;
         int count = 0;
-        while(scovilles.stream()
-                .anyMatch(value -> value < K)) {
-
-            if(scovilles.size() < 2) {
-                return -1;
+        while(min < K) {
+            if(queue.size() < 2) {
+                success = false;
+                break;
             }
-            int mixed = scovilles.poll() + 2 * scovilles.poll();
-            scovilles.add(mixed);
+            int first = queue.poll();
+            int second = queue.poll();
+            int sum = first + second * 2;
+            queue.add(sum);
+            min = queue.peek();
             count++;
         }
-
-        return count;
+        
+        return success ? count : -1;
     }
 }
