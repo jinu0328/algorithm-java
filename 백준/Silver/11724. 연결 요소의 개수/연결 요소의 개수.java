@@ -31,7 +31,7 @@ public class Main {
         int count = 0;
         for (int i = 0; i < N; i++) {
             if (!visited[i]) {
-                dfs(i);
+                bfs(i);
                 count++;
             }
         }
@@ -46,6 +46,23 @@ public class Main {
         for (Integer num : list) {
             if (!visited[num]) {
                 dfs(num);
+            }
+        }
+    }
+
+    private static void bfs(int v) {
+        Queue<Integer> queue = new ArrayDeque<>();
+        visited[v] = true;
+        queue.add(v);
+
+        while(!queue.isEmpty()) {
+            int target = queue.poll();
+            List<Integer> list = graph[target];
+            for(Integer num : list) {
+                if(!visited[num]) {
+                    visited[num] = true;
+                    queue.add(num);
+                }
             }
         }
     }
