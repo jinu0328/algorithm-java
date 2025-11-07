@@ -1,62 +1,48 @@
 import java.util.*;
 
 public class Main {
-    private static List<List<Integer>> graph = new ArrayList<>();
-    private static int count = 0;
-    private static boolean[] isVisited;
+    static List<Integer>[] graph;
+    static boolean[] visited;
+    static int N, M;
+    static int count = 0;
 
+    // 첫째 줄에는 컴퓨터의 수가 주어진다.
+    // 컴퓨터의 수는 100 이하인 양의 정수이고 각 컴퓨터에는 1번 부터 차례대로 번호가 매겨진다.
+    // 둘째 줄에는 네트워크 상에서 직접 연결되어 있는 컴퓨터 쌍의 수가 주어진다.
+    // 이어서 그 수만큼 한 줄에 한 쌍씩 네트워크 상에서 직접 연결되어 있는 컴퓨터의 번호 쌍이 주어진다.
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
+        Scanner sc = new Scanner(System.in);
 
-        int N = scanner.nextInt();
-        int V = scanner.nextInt();
-
+        int N = sc.nextInt();
+        int M = sc.nextInt();
+        graph = new List[N];
         for (int i = 0; i < N; i++) {
-            graph.add(new ArrayList<>());
+            graph[i] = new ArrayList<>();
         }
 
-        for (int i = 0; i < V; i++) {
-            int node1 = scanner.nextInt();
-            int node2 = scanner.nextInt();
+        while(M-- > 0) {
+            int start = sc.nextInt() - 1;
+            int end = sc.nextInt() - 1;
 
-            graph.get(node1 - 1).add(node2);
-            graph.get(node2 - 1).add(node1);
+            graph[start].add(end);
+            graph[end].add(start);
         }
 
-        isVisited = new boolean[N];
-        //dfs(1);
-        bfs(1);
-        System.out.println(count - 1);
+        visited = new boolean[N];
+        dfs(0);
+
+        System.out.println(count);
     }
 
-    private static void dfs(int start) {
-        int index = start - 1;
-        if (isVisited[index]) {
-            return;
-        }
+    private static void dfs(int v) {
+        visited[v] = true;
 
-        isVisited[index] = true;
-        count++;
+        List<Integer> computers = graph[v];
 
-        for (int neighbor : graph.get(index)) {
-            dfs(neighbor);
-        }
-    }
-
-    private static void bfs(int start) {
-        Queue<Integer> queue = new LinkedList<>();
-        queue.add(start);
-        isVisited[start - 1] = true;
-
-        while (!queue.isEmpty()) {
-            int current = queue.poll();
-            count++;
-
-            for (int neighbor : graph.get(current - 1)) {
-                if (!isVisited[neighbor - 1]) {
-                    isVisited[neighbor - 1] = true;
-                    queue.add(neighbor);
-                }
+        for(Integer computer : computers) {
+            if(!visited[computer]) {
+                count++;
+                dfs(computer);
             }
         }
     }
