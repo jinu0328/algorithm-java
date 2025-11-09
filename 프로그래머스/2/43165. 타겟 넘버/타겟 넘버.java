@@ -1,20 +1,28 @@
+import java.util.*;
 class Solution {
-    boolean[] visited;
-    int count = 0;
     public int solution(int[] numbers, int target) {
-        dfs(0, 0, target, numbers);
-        return count;
-    }
-    
-    private void dfs(int current, int next, int target, int[] numbers) {
-        if(next == numbers.length) {
-            if(current == target) {
-                count++;
+        int answer = 0;
+        
+        Queue<int[]> queue = new ArrayDeque<>();
+        
+        int[] initial = {0, 0};
+        queue.add(initial);
+        
+        while(!queue.isEmpty()) {
+            int[] current = queue.poll();
+            int sum = current[0];
+            int count = current[1];
+            if(count == numbers.length) {
+                if(sum == target) {
+                    answer++;
+                }
+                continue;
             }
-            return;
+            
+            queue.offer(new int[]{sum + numbers[count], count + 1});
+            queue.offer(new int[]{sum - numbers[count], count + 1});
         }
         
-        dfs(current + numbers[next], next + 1, target, numbers);
-        dfs(current - numbers[next], next + 1, target, numbers);
+        return answer;
     }
 }
