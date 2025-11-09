@@ -1,25 +1,34 @@
+import java.util.*;
+
 class Solution {
-    int count = 0;
     public int solution(int n, int[][] computers) {
-        boolean[] visited = new boolean[n];
-        for(int i = 0; i < n; i++) {
+        Queue<Integer> queue = new ArrayDeque<>();
+        int count = 0;
+        boolean[] visited = new boolean[computers.length];
+        
+        for(int i = 0; i < computers.length; i++) {
+            boolean check = false;
             if(!visited[i]) {
-                dfs(i, visited, computers);
+                check = true;
+                visited[i] = true;
+            }
+            
+            queue.offer(i);
+            while(!queue.isEmpty()) {
+                int[] current = computers[queue.poll()];
+                for(int j = 0; j < current.length; j++) {
+                    if(!visited[j] && current[j] == 1) {
+                        visited[j] = true;
+                        queue.offer(j);
+                    }
+                }
+            }
+            
+            if(check) {
                 count++;
             }
         }
         
         return count;
     }
-    
-    private void dfs(int v, boolean[] visited, int[][] computers) {
-        int[] route = computers[v];
-        visited[v] = true;
-        for(int i = 0; i < route.length; i++) {
-            if(!visited[i] && route[i] == 1) {
-                dfs(i, visited, computers);
-            }
-        }
-    }
 }
-
