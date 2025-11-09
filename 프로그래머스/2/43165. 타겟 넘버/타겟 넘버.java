@@ -1,18 +1,20 @@
 class Solution {
-    int answer = 0;
+    boolean[] visited;
+    int count = 0;
     public int solution(int[] numbers, int target) {
-        dfs(0, 0, numbers, target, 0);
-        return answer;
+        dfs(0, 0, target, numbers);
+        return count;
     }
     
-    private void dfs(int index, int initial, int[] numbers, int target, int count) {
-        if(initial == target && count == numbers.length) {
-            answer++;
+    private void dfs(int current, int next, int target, int[] numbers) {
+        if(next == numbers.length) {
+            if(current == target) {
+                count++;
+            }
             return;
         }
-        for(int i = index; i < numbers.length; i++) {
-            dfs(i + 1, initial + numbers[i], numbers, target, count + 1);
-            dfs(i + 1, initial - numbers[i], numbers, target, count + 1);
-        }
+        
+        dfs(current + numbers[next], next + 1, target, numbers);
+        dfs(current - numbers[next], next + 1, target, numbers);
     }
 }
