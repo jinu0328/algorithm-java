@@ -25,12 +25,12 @@ public class Main {
 
         Arrays.sort(nums);  // 사전순 출력을 위해 정렬
 
-        dfs(0);
+        dfs(0, 0);
 
         System.out.print(sb);
     }
 
-    static void dfs(int depth) {
+    static void dfs(int depth, int start) {
         if(depth == M) {
             for(int i = 0; i < M; i++) {
                 sb.append(output[i]).append(' ');
@@ -39,29 +39,13 @@ public class Main {
             return;
         }
 
-        for(int i = 0; i < N; i++) {
+        for(int i = start; i < N; i++) {
             if(!visited[i]) {
-                if(depth > 0 && output[depth - 1] > nums[i]) {
-                    continue;
-                }
                 visited[i] = true;
                 output[depth] = nums[i];
-                dfs(depth + 1);
+                dfs(depth + 1, i);
                 visited[i] = false;
             }
         }
     }
 }
-// N개의 자연수와 자연수 M이 주어졌을 때, 아래 조건을 만족하는 길이가 M인 수열을 모두 구하는 프로그램을 작성하시오.
-// N개의 자연수는 모두 다른 수이다.
-//
-//N개의 자연수 중에서 M개를 고른 수열
-//입력
-//첫째 줄에 N과 M이 주어진다. (1 ≤ M ≤ N ≤ 8)
-//
-//둘째 줄에 N개의 수가 주어진다. 입력으로 주어지는 수는 10,000보다 작거나 같은 자연수이다.
-//
-//출력
-//한 줄에 하나씩 문제의 조건을 만족하는 수열을 출력한다. 중복되는 수열을 여러 번 출력하면 안되며, 각 수열은 공백으로 구분해서 출력해야 한다.
-//
-//수열은 사전 순으로 증가하는 순서로 출력해야 한다.
