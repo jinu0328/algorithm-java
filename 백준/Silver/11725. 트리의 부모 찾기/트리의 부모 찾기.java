@@ -25,20 +25,23 @@ public class Main {
             tree[node2].add(node1);
         }
 
-        dfs(1);
+        Queue<Integer> queue = new ArrayDeque<>();
+        queue.add(1);
+        visited[1] = true;
+        while(!queue.isEmpty()) {
+            Integer parentId = queue.poll();
+            List<Integer> current = tree[parentId];
+            for(Integer number : current) {
+                if(!visited[number]) {
+                    visited[number] = true;
+                    parent[number] = parentId;
+                    queue.add(number);
+                }
+            }
+        }
+
         for(int i = 2; i <= N; i++) {
             System.out.println(parent[i]);
-        }
-    }
-
-    private static void dfs(int node) {
-        visited[node] = true;
-        List<Integer> nodes = tree[node];
-        for(Integer current : nodes) {
-            if(!visited[current]) {
-                parent[current] = node;
-                dfs(current);
-            }
         }
     }
 }
