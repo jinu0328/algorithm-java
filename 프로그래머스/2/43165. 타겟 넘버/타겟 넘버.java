@@ -2,7 +2,6 @@ import java.util.*;
 class Solution {
     public int solution(int[] numbers, int target) {
         int answer = 0;
-        
         Queue<int[]> queue = new ArrayDeque<>();
         
         int[] initial = {0, 0};
