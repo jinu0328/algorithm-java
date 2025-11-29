@@ -42,20 +42,28 @@ public class Main {
             return;
         }
 
-        op[ADD]++;
-        solve(index + 1, value + nums[index], op);
-        op[ADD]--;
+        if(op[ADD] < operation[ADD]) {
+            op[ADD]++;
+            solve(index + 1, value + nums[index], op);
+            op[ADD]--;
+        }
 
-        op[DISTRACT]++;
-        solve(index + 1, value - nums[index], op);
-        op[DISTRACT]--;
+        if(op[DISTRACT] < operation[DISTRACT]) {
+            op[DISTRACT]++;
+            solve(index + 1, value - nums[index], op);
+            op[DISTRACT]--;
+        }
 
-        op[MULTIPLE]++;
-        solve(index + 1, value * nums[index], op);
-        op[MULTIPLE]--;
+        if(op[MULTIPLE] < operation[MULTIPLE]) {
+            op[MULTIPLE]++;
+            solve(index + 1, value * nums[index], op);
+            op[MULTIPLE]--;
+        }
 
-        op[DIVIDE]++;
-        solve(index + 1, value / nums[index], op);
-        op[DIVIDE]--;
+        if(op[DIVIDE] < operation[DIVIDE]) {
+            op[DIVIDE]++;
+            solve(index + 1, value / nums[index], op);
+            op[DIVIDE]--;
+        }
     }
 }
