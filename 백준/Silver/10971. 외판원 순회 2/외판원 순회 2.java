@@ -37,6 +37,8 @@ public class Main {
     }
 
     private static void solve(int current, int cost, int count, int start) {
+        if (cost >= result) return;
+
         if(count == N) {
             int lastCost = graph[current].get(start);
             if(lastCost != 0) {
