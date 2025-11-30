@@ -1,16 +1,9 @@
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Scanner;
 
 public class Main {
     static int r, c;
-    static char[][] board;
-    static int UP = -1;
-    static int DOWN = 1;
-    static int RIGHT = 1;
-    static int LEFT = -1;
-    static int result = Integer.MIN_VALUE;
-    static Map<Character, Boolean> count = new HashMap<>();
+    static boolean[] check = new boolean[26];
+    static int[][] board;
 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
@@ -18,54 +11,43 @@ public class Main {
         r = sc.nextInt();
         c = sc.nextInt();
         sc.nextLine();
-        board = new char[r][c];
+        board = new int[r][c];
         for(int i = 0; i < r; i++) {
             String input = sc.nextLine();
             for(int j = 0; j < c; j++) {
-                board[i][j] = input.charAt(j);
+                board[i][j] = input.charAt(j) - 'A';
             }
         }
-
-        count.put(board[0][0], true);
-        solve(0, 0, 1);
-        System.out.println(result);
+        check[board[0][0]] = true;
+        System.out.println(solve(0, 0));
     }
 
-    private static void solve(int currentR, int currentC, int depth) {
-        // 재귀
-        if(currentR > 0) {
-            char next = board[currentR + UP][currentC];
-            if(!count.containsKey(next) || !count.get(next)) {
-                count.put(next, true);
-                solve(currentR + UP, currentC, depth + 1);
-                count.put(next, false);
-            }
-        }
-        if(currentR < r - 1) {
-            char next = board[currentR + DOWN][currentC];
-            if(!count.containsKey(next) || !count.get(next)) {
-                count.put(next, true);
-                solve(currentR + DOWN, currentC, depth + 1);
-                count.put(next, false);
-            }
-        }
-        if(currentC > 0) {
-            char next = board[currentR][currentC + LEFT];
-            if(!count.containsKey(next) || !count.get(next)) {
-                count.put(next, true);
-                solve(currentR, currentC + LEFT, depth + 1);
-                count.put(next, false);
-            }
-        }
-        if(currentC < c - 1) {
-            char next = board[currentR][currentC + RIGHT];
-            if(!count.containsKey(next) || !count.get(next)) {
-                count.put(next, true);
-                solve(currentR, currentC + RIGHT, depth + 1);
-                count.put(next, false);
-            }
-        }
+    static int[] dr = {-1, 0, 1, 0};
+    static int[] dc = {0, 1, 0, -1};
 
-        result = Math.max(result, depth);
+    private static int solve(int row, int col) {
+        int result = 0;
+        for(int i = 0; i < 4; i++) {
+            int nr = row + dr[i];
+            int nc = col + dc[i];
+            if(isOutOfBound(nr, nc, r, c)) {
+                continue;
+            }
+
+            int next = board[nr][nc];
+            if(check[next]) {
+                continue;
+            }
+
+            check[next] = true;
+            int nextResult = solve(nr, nc);
+            result = Math.max(result, nextResult);
+            check[next] = false;
+        }
+        return result + 1;
+    }
+
+    private static boolean isOutOfBound(int row, int col, int boundR, int boundC) {
+        return row < 0 || col < 0 || row >= boundR || col >= boundC;
     }
 }
